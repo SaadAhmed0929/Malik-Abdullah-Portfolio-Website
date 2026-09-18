@@ -1,0 +1,1281 @@
+/* =============================================
+   EASTER EGG — Hand-Drawn Corridor Experience
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ---------- Variables ---------- */
+:root {
+  --ee-paper: #f4f3ee;
+  --ee-paper-warm: #f7f6f1;
+  --ee-ink: #222222;
+  --ee-ink-light: #666666;
+  --ee-ink-faint: #bbbbbb;
+  --ee-accent: #0077b6;
+  --ee-red: #d90429;
+  --ee-brass: #d4af37;
+  --ee-wood: #c68a4c;
+  --ee-wood-dark: #7c481d;
+  --ee-font-hand: 'Kalam', cursive;
+  --ee-font-label: 'Special Elite', serif;
+  --ee-font-code: 'Courier Prime', monospace;
+  --ee-font-body: 'Inter', sans-serif;
+}
+
+/* ---------- Scene Container ---------- */
+.ee-scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+  overflow: hidden;
+}
+
+/* =============================================
+   SWIRL TRANSITION
+   ============================================= */
+.swirl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  background: var(--ee-paper);
+}
+
+.swirl-overlay svg {
+  width: 200vmax;
+  height: 200vmax;
+  position: absolute;
+}
+
+.swirl-spiral {
+  fill: none;
+  stroke: var(--ee-ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* =============================================
+   PERSISTENT UI CHROME
+   ============================================= */
+.ee-chrome {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  pointer-events: none;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ee-chrome-btn {
+  pointer-events: all;
+  background: var(--ee-paper);
+  border: 2px solid var(--ee-ink);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--ee-ink);
+  font-size: 1.1rem;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+}
+
+.ee-chrome-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+}
+
+.ee-chrome-left {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ee-chrome-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ee-chrome-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--ee-ink);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =============================================
+   INSTRUCTION CARD
+   ============================================= */
+.ee-instruction-card {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400;
+  background: var(--ee-paper);
+  border: 2px solid var(--ee-ink);
+  border-radius: 4px 12px 4px 8px;
+  padding: 1rem 1.8rem;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
+  animation: ee-card-in 0.5s ease-out;
+}
+
+.ee-instruction-card.ee-card-hiding {
+  animation: ee-card-out 0.4s ease-in forwards;
+}
+
+.ee-instruction-card__header {
+  font-family: var(--ee-font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ee-ink);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.ee-instruction-card__body {
+  font-family: var(--ee-font-body);
+  font-size: 0.82rem;
+  color: var(--ee-ink-light);
+  line-height: 1.5;
+}
+
+.ee-instruction-card__arrow {
+  position: absolute;
+  top: -18px;
+  right: 20px;
+  font-family: var(--ee-font-hand);
+  font-size: 1.5rem;
+  color: var(--ee-ink);
+  transform: rotate(15deg);
+}
+
+@keyframes ee-card-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes ee-card-out {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+/* =============================================
+   PROJECT MODAL
+   ============================================= */
+.ee-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ee-fade-in 0.3s ease;
+}
+
+.ee-modal-card {
+  background: var(--ee-paper);
+  border: 2px solid var(--ee-ink);
+  border-radius: 4px 16px 4px 8px;
+  padding: 2.5rem 2rem 2rem;
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+  animation: ee-modal-in 0.35s ease-out;
+  color: var(--ee-ink);
+}
+
+.ee-modal-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--ee-ink);
+  font-family: var(--ee-font-hand);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+
+.ee-modal-close:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.ee-modal-header {
+  font-family: var(--ee-font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: var(--ee-ink-light);
+}
+
+.ee-modal-title {
+  font-family: var(--ee-font-hand);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: var(--ee-ink);
+}
+
+.ee-modal-desc {
+  font-family: var(--ee-font-body);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--ee-ink-light);
+  margin-bottom: 1.5rem;
+}
+
+.ee-modal-tech {
+  margin-bottom: 1.5rem;
+}
+
+.ee-modal-tech__label {
+  font-family: var(--ee-font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ee-ink-light);
+  margin-bottom: 0.5rem;
+}
+
+.ee-modal-tech__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ee-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border: 1.5px solid var(--ee-ink);
+  border-radius: 3px;
+  font-family: var(--ee-font-code);
+  font-size: 0.65rem;
+  color: var(--ee-ink);
+  background: var(--ee-paper-warm);
+}
+
+.ee-tech-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ee-modal-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  background: var(--ee-ink);
+  color: var(--ee-paper);
+  border: none;
+  border-radius: 3px;
+  font-family: var(--ee-font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+
+.ee-modal-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+@keyframes ee-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ee-modal-in {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* =============================================
+   CONTACT FORM (Mail Theme)
+   ============================================= */
+.ee-contact-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ee-fade-in 0.3s ease;
+}
+
+.ee-contact-letter {
+  background: var(--ee-paper);
+  border: 2px solid var(--ee-ink);
+  border-radius: 4px;
+  padding: 2.5rem 2rem 2rem;
+  max-width: 440px;
+  width: 90%;
+  position: relative;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+  animation: ee-letter-in 0.5s ease-out;
+  color: var(--ee-ink);
+}
+
+.ee-contact-letter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    #e63946 0, #e63946 10px,
+    var(--ee-paper) 10px, var(--ee-paper) 15px,
+    #1d3557 15px, #1d3557 25px,
+    var(--ee-paper) 25px, var(--ee-paper) 30px
+  );
+}
+
+.ee-contact-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.ee-contact-header h3 {
+  font-family: var(--ee-font-hand);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ee-ink);
+}
+
+.ee-contact-header__icon {
+  font-size: 1.5rem;
+}
+
+.ee-contact-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--ee-ink);
+  font-family: var(--ee-font-hand);
+  line-height: 1;
+}
+
+.ee-contact-field {
+  margin-bottom: 1.2rem;
+}
+
+.ee-contact-field label {
+  display: block;
+  font-family: var(--ee-font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ee-ink-light);
+  margin-bottom: 0.3rem;
+}
+
+.ee-contact-field input,
+.ee-contact-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--ee-ink-faint);
+  padding: 0.5rem 0;
+  font-family: var(--ee-font-body);
+  font-size: 0.9rem;
+  color: var(--ee-ink);
+  outline: none;
+  transition: border-color 0.3s;
+  resize: none;
+}
+
+.ee-contact-field input:focus,
+.ee-contact-field textarea:focus {
+  border-bottom-color: var(--ee-ink);
+}
+
+.ee-contact-field textarea {
+  min-height: 80px;
+}
+
+.ee-contact-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.8rem;
+  background: var(--ee-ink);
+  color: var(--ee-paper);
+  border: none;
+  border-radius: 3px;
+  font-family: var(--ee-font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.25s;
+}
+
+.ee-contact-send:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+@keyframes ee-letter-in {
+  from { opacity: 0; transform: translateY(40px) rotate(-2deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+/* =============================================
+   PRELOADER
+   ============================================= */
+.ee-preloader {
+  background: var(--ee-paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ee-font-hand);
+  color: var(--ee-ink);
+}
+
+.ee-preloader__ring {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ee-preloader__ring svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.ee-preloader__ring-circle {
+  fill: none;
+  stroke: var(--ee-ink);
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  stroke-linecap: round;
+}
+
+.ee-preloader__percent {
+  font-size: 2.8rem;
+  font-weight: 700;
+  z-index: 1;
+  font-family: var(--ee-font-hand);
+  letter-spacing: -0.03em;
+}
+
+.ee-preloader__bolt {
+  fill: none;
+  stroke: var(--ee-ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ee-preloader__subtitle {
+  font-family: var(--ee-font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  color: var(--ee-ink-light);
+}
+
+/* =============================================
+   BUILDING EXTERIOR
+   ============================================= */
+/* =============================================
+   BUILDING EXTERIOR (Full-Bleed Hand-Drawn Facade)
+   ============================================= */
+.ee-building {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #f7f6f1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ee-building__facade {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 3vw;
+  z-index: 10;
+}
+
+/* Left Decor: Tree, Swing Mouse & Sitting White Cat */
+.ee-building__left-decor {
+  position: relative;
+  width: 32vw;
+  max-width: 380px;
+  height: 85vh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.ee-building__tree-svg {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.05);
+  transform-origin: bottom left;
+}
+
+.ee-building__cat-svg {
+  position: absolute;
+  bottom: 0;
+  right: 8%;
+  width: 65px;
+  height: 80px;
+  z-index: 5;
+}
+
+/* Center Facade: Hanging Sign, Entrance Doors & Cobblestones */
+.ee-building__center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  z-index: 20;
+}
+
+/* Hanging Sign */
+.ee-building__sign-wrap {
+  position: absolute;
+  top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 15;
+}
+
+.ee-building__sign-beam {
+  width: 240px;
+  height: 14px;
+  background: #c68a4c;
+  border: 2.5px solid #222;
+  border-radius: 2px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.ee-building__chain {
+  width: 3px;
+  height: 32px;
+  background: repeating-linear-gradient(0deg, #222 0, #222 5px, transparent 5px, transparent 9px);
+  position: absolute;
+  top: 12px;
+}
+
+.ee-building__chain.ee-chain-left {
+  left: 40px;
+}
+
+.ee-building__chain.ee-chain-right {
+  right: 40px;
+}
+
+.ee-building__sign-board {
+  margin-top: 28px;
+  background: #e2c398;
+  border: 2.5px solid #222;
+  border-radius: 3px;
+  padding: 0.6rem 2.5rem;
+  box-shadow: 3px 4px 0 rgba(0,0,0,0.12);
+  position: relative;
+  text-align: center;
+}
+
+.ee-building__sign-text {
+  font-family: var(--ee-font-label, 'Special Elite', monospace);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Entrance Doors */
+.ee-building__door-wrap {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  perspective: 900px;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.ee-building__door-frame {
+  position: absolute;
+  inset: -10px -10px 0 -10px;
+  border: 3px solid #222;
+  background: #eae6df;
+  z-index: -1;
+}
+
+.ee-building__door-panel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #ffffff;
+  border: 2px solid #222;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.ee-building__door-panel--left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 1.5px solid #222;
+}
+
+.ee-building__door-panel--right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 1.5px solid #222;
+}
+
+.ee-building__door-wrap.ee-door-open .ee-building__door-panel--left {
+  transform: rotateY(-115deg);
+}
+
+.ee-building__door-wrap.ee-door-open .ee-building__door-panel--right {
+  transform: rotateY(115deg);
+}
+
+.ee-building__door-handle {
+  position: absolute;
+  top: 48%;
+  width: 7px;
+  height: 26px;
+  background: #d4af37;
+  border: 1.5px solid #222;
+  border-radius: 2px;
+  z-index: 15;
+}
+
+.ee-handle-left {
+  right: 6px;
+}
+
+.ee-handle-right {
+  left: 6px;
+}
+
+/* Door Light */
+.ee-building__door-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #ffffff 0%, rgba(255,255,255,0.9) 50%, transparent 80%);
+  opacity: 0;
+  transition: opacity 0.8s ease 0.2s;
+  z-index: -1;
+}
+
+.ee-building__door-wrap.ee-door-open .ee-building__door-light {
+  opacity: 1;
+}
+
+/* Skill Stickers on Door */
+.ee-sticker {
+  position: absolute;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--ee-font-label, 'Special Elite', monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1.5px solid #222;
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  transform: rotate(-6deg);
+  z-index: 10;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ee-sticker--hex {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  padding: 0.45rem 0.7rem;
+}
+
+.ee-sticker--atom {
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  padding: 0;
+}
+
+.ee-sticker--shield {
+  border-radius: 2px 2px 10px 10px;
+  padding: 0.35rem 0.55rem;
+}
+
+/* Cobblestone Path */
+.ee-building__cobblestones {
+  width: 280px;
+  height: 140px;
+  margin-top: -2px;
+  z-index: 10;
+}
+
+/* Right Side: Window with Planter Box */
+.ee-building__window-wrap {
+  position: relative;
+  width: 25vw;
+  max-width: 280px;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ee-building__window-svg {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+}
+
+/* Footer Banner */
+.ee-building__footer-card {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: #ffffff;
+  border: 2px solid #222;
+  border-radius: 4px 14px 4px 8px;
+  padding: 0.6rem 2rem;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.ee-building__card-tag {
+  font-family: var(--ee-font-label, 'Special Elite', monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #222;
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+}
+
+.ee-building__card-text {
+  font-family: var(--ee-font-body, sans-serif);
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* =============================================
+   GALLERY
+   ============================================= */
+.ee-gallery {
+  background: var(--ee-paper);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ee-gallery__skyline {
+  position: absolute;
+  bottom: 35%;
+  left: 0;
+  right: 0;
+  height: 250px;
+  pointer-events: none;
+}
+
+.ee-gallery__skyline svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ee-gallery__railing {
+  position: absolute;
+  bottom: 30%;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+}
+
+.ee-gallery__railing svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ee-gallery__wire {
+  position: absolute;
+  top: 15%;
+  left: -5%;
+  right: -5%;
+  height: 3px;
+}
+
+.ee-gallery__wire::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ee-ink);
+  border-radius: 2px;
+}
+
+.ee-gallery__cards-track {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  height: 55%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem 3rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ee-gallery__cards-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Project card on clothesline */
+.ee-gallery-card {
+  position: relative;
+  flex-shrink: 0;
+  width: 200px;
+  background: var(--ee-paper-warm);
+  border: 2px solid var(--ee-ink);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  transform-origin: top center;
+  animation: ee-card-sway 4s ease-in-out infinite;
+}
+
+.ee-gallery-card:nth-child(2) { animation-delay: -0.7s; animation-duration: 4.3s; }
+.ee-gallery-card:nth-child(3) { animation-delay: -1.4s; animation-duration: 3.8s; }
+.ee-gallery-card:nth-child(4) { animation-delay: -2.1s; animation-duration: 4.6s; }
+.ee-gallery-card:nth-child(5) { animation-delay: -0.3s; animation-duration: 3.5s; }
+.ee-gallery-card:nth-child(6) { animation-delay: -1.8s; animation-duration: 4.1s; }
+
+/* Clip pin */
+.ee-gallery-card::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 22px;
+  background: var(--ee-ink);
+  z-index: 5;
+}
+
+.ee-gallery-card::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ee-ink);
+  border-radius: 50%;
+  background: var(--ee-paper);
+  z-index: 6;
+}
+
+/* Greyscale by default */
+.ee-gallery-card__img-wrap {
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  border-bottom: 2px solid var(--ee-ink);
+}
+
+.ee-gallery-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) brightness(1.1);
+  transition: filter 0.5s ease;
+}
+
+.ee-gallery-card__title {
+  padding: 0.6rem 0.8rem;
+  font-family: var(--ee-font-hand);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ee-ink);
+}
+
+/* Focus/hover state — spot color */
+.ee-gallery-card:hover,
+.ee-gallery-card.ee-card-focused {
+  transform: translateY(-8px);
+  box-shadow: 4px 6px 0 rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.ee-gallery-card:hover .ee-gallery-card__img-wrap img,
+.ee-gallery-card.ee-card-focused .ee-gallery-card__img-wrap img {
+  filter: grayscale(0%) brightness(1);
+}
+
+@keyframes ee-card-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+.ee-gallery-card:hover,
+.ee-gallery-card.ee-card-focused {
+  animation-play-state: paused;
+  transform: translateY(-8px) rotate(0deg);
+}
+
+/* =============================================
+   STUDIO — Floating Card Cloud
+   ============================================= */
+.ee-studio {
+  background: var(--ee-paper);
+}
+
+.ee-studio__canvas-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* Spotlight/vignette overlay */
+.ee-studio__spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  pointer-events: all;
+  background: radial-gradient(
+    circle 300px at var(--spot-x, 50%) var(--spot-y, 50%),
+    transparent 0%,
+    rgba(0,0,0,0.7) 100%
+  );
+  animation: ee-fade-in 0.4s ease;
+}
+
+.ee-studio__detail-card {
+  position: fixed;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 460;
+  background: var(--ee-paper);
+  border: 2px solid var(--ee-ink);
+  border-radius: 4px 12px 4px 8px;
+  padding: 2rem 1.8rem;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+  animation: ee-slide-in-right 0.4s ease-out;
+  color: var(--ee-ink);
+}
+
+.ee-studio__detail-card h3 {
+  font-family: var(--ee-font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.ee-studio__detail-card .date {
+  font-family: var(--ee-font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--ee-ink-light);
+  margin-bottom: 0.8rem;
+}
+
+.ee-studio__detail-card .desc {
+  font-family: var(--ee-font-body);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--ee-ink-light);
+  margin-bottom: 1.2rem;
+}
+
+@keyframes ee-slide-in-right {
+  from { opacity: 0; transform: translateY(-50%) translateX(30px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* =============================================
+   PASSWORD MODAL (Sleek Dark Minimalist Style)
+   ============================================= */
+.ee-password-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ee-password-card {
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 3rem 2.5rem 2.5rem;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+}
+
+.ee-password-card::before,
+.ee-password-card::after {
+  display: none;
+}
+
+.ee-password-card h3 {
+  font-family: var(--font, 'Montserrat', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+  color: #ffffff;
+}
+
+.ee-password-card .ee-pw-hint {
+  font-family: var(--font, 'Montserrat', sans-serif);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.ee-password-card input {
+  width: 80%;
+  max-width: 280px;
+  margin: 0 auto 0.5rem auto;
+  display: block;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.5rem 0;
+  font-family: var(--font, 'Montserrat', sans-serif);
+  font-size: 0.95rem;
+  text-align: center;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.ee-password-card input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.ee-password-card input:focus {
+  border-bottom-color: #ffffff;
+}
+
+.ee-password-card input.ee-pw-error-input {
+  border-bottom-color: #ff4d4d;
+  color: #ff4d4d;
+  animation: ee-shake 0.4s ease;
+}
+
+.ee-pw-error-msg {
+  font-family: var(--font, 'Montserrat', sans-serif);
+  font-size: 0.8rem;
+  color: #ff4d4d;
+  margin-top: 0.4rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.ee-pw-error-msg::after {
+  display: none;
+}
+
+.ee-pw-spacer {
+  height: 1.5rem;
+}
+
+.ee-password-card button[type="submit"] {
+  background: #ffffff;
+  color: #0a0a0a;
+  border: none;
+  padding: 0.75rem 2.2rem;
+  font-family: var(--font, 'Montserrat', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  border-radius: 0px;
+  margin-top: 0.5rem;
+}
+
+.ee-password-card button[type="submit"]:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+@keyframes ee-shake {
+  0%, 100% { transform: translateX(0); }
+  10%      { transform: translateX(-8px); }
+  20%      { transform: translateX(8px); }
+  30%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  50%      { transform: translateX(-4px); }
+  60%      { transform: translateX(4px); }
+  70%      { transform: translateX(-2px); }
+  80%      { transform: translateX(2px); }
+}
+
+/* =============================================
+   SCENE TRANSITIONS
+   ============================================= */
+.ee-scene-enter {
+  animation: ee-scene-fade-in 0.6s ease-out;
+}
+
+.ee-scene-exit {
+  animation: ee-scene-fade-out 0.4s ease-in forwards;
+}
+
+@keyframes ee-scene-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ee-scene-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Door transition (zoom into door) */
+.ee-scene-door-enter {
+  animation: ee-door-zoom 0.8s ease-in forwards;
+}
+
+@keyframes ee-door-zoom {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(3); filter: blur(4px); }
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .ee-building__scene {
+    height: 400px;
+  }
+  
+  .ee-building__wall {
+    width: 300px;
+    height: 280px;
+  }
+
+  .ee-building__sign {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+  }
+
+  .ee-gallery__cards-track {
+    gap: 1.2rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .ee-gallery-card {
+    width: 160px;
+  }
+
+  .ee-gallery-card__img-wrap {
+    height: 100px;
+  }
+
+  .ee-studio__detail-card {
+    right: 1rem;
+    left: 1rem;
+    top: auto;
+    bottom: 2rem;
+    transform: none;
+    max-width: none;
+  }
+
+  @keyframes ee-slide-in-right {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .ee-chrome {
+    padding: 0.8rem 1rem;
+  }
+
+  .ee-chrome-btn {
+    width: 36px;
+    height: 36px;
+  }
+}

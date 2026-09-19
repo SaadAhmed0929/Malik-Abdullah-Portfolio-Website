@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useFadeIn, useParallax } from '../hooks/useAnimations';
 import HeroLetterGrid from '../components/HeroLetterGrid';
-import SecretDoorButton from '../components/SecretDoorButton';
 
 const ArrowUpRight = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
@@ -158,7 +157,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-      <SecretDoorButton />
     </>
   )
 }

@@ -8,7 +8,6 @@ import Preloader from './components/Preloader'
 import Home from './pages/Home'
 import Works from './pages/Works'
 import Contact from './pages/Contact'
-import SecretCorridor from './pages/SecretCorridor'
 
 import { useSEO } from './hooks/useSEO'
 
@@ -64,7 +63,6 @@ export default function App() {
           <Route path="/" element={<Layout loading={loading} revealing={revealing}><Home /></Layout>} />
           <Route path="/works" element={<Layout loading={loading} revealing={revealing}><Works /></Layout>} />
           <Route path="/contact" element={<Layout loading={loading} revealing={revealing}><Contact /></Layout>} />
-          <Route path="/secret-corridor" element={<SecretCorridor />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

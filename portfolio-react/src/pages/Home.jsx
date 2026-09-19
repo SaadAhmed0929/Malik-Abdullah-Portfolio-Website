@@ -76,7 +76,7 @@ export default function Home() {
             <div className="motivation__img-wrap" data-parallax-wrap>
               <div className="motivation__img-inner" ref={parallaxRef}>
                 <img
-                  src="/images/me.png"
+                  src="/images/me.jpeg"
                   alt="Muhammad Abdullah"
                   onError={e => {
                     e.currentTarget.parentElement.style.background =

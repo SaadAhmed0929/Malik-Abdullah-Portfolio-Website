@@ -11,6 +11,15 @@ const projects = [
     fallbackBg: 'linear-gradient(135deg,#1c0a00,#7c1d1d)',
   },
   {
+    title: 'MCUFLIX',
+    category: 'High-Fidelity Desktop Streaming Platform & ETL Pipeline',
+    desc: 'Engineered a 1:1 Netflix-parity desktop streaming suite for 100+ MCU titles across movies, series, and sagas using Electron, React 19, and TailwindCSS. Developed an automated TMDB ETL data ingestion script caching transparent logos, 4K artwork, and cast metadata for 0ms instant-mount UI renders, coupled with an intelligent hybrid player that seamlessly switches between local high-bitrate media and cached YouTube trailer streams.',
+    href: '#',
+    img: '/images/MCUFLIX.png',
+    imgAlt: 'MCUFLIX: High-Fidelity Desktop Streaming Platform & ETL Pipeline',
+    fallbackBg: 'linear-gradient(135deg,#e50914,#141414)',
+  },
+  {
     title: 'CODEQUEST',
     category: 'Gamified Learning Platform',
     desc: 'Engineered an interactive, gamified platform to teach Python programming. Designed dynamic feature flows and integrated hidden technical Easter eggs to drive user retention and deliver a highly engaging learning environment.',
@@ -257,7 +266,7 @@ export default function Works() {
                     i === 0 ? 'project-card--first' : '',
                   ].filter(Boolean).join(' ')}
                 >
-                  <CardBorder border={CARD_BORDERS[i]} />
+                  <CardBorder border={CARD_BORDERS[i % CARD_BORDERS.length]} />
                   <div className="project-card__img-wrap">
                     <img
                       src={p.img}

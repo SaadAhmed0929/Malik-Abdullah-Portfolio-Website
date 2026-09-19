@@ -8,7 +8,7 @@ const SEO_CONFIG = {
   },
   '/works': {
     title: 'Works & Projects | Muhammad Abdullah — Software Engineer',
-    description: 'Explore engineering projects by Muhammad Abdullah: Ragdoll Royale 3D physics RTS game engine, gamified learning architectures, e-commerce SaaS platforms, and simulation engines.',
+    description: 'Explore engineering projects by Muhammad Abdullah: Ragdoll Royale 3D physics RTS game engine, MCUFLIX desktop streaming suite, gamified learning architectures, and e-commerce SaaS platforms.',
   },
   '/contact': {
     title: 'Contact Muhammad Abdullah | Software Engineer & Collaborations',
